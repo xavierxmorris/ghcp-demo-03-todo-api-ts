@@ -33,7 +33,7 @@ each prompt. This is a starter lab, not a finished API.
 ```bash
 git clone https://github.com/xavierxmorris/ghcp-demo-03-todo-api-ts.git
 cd ghcp-demo-03-todo-api-ts
-npm install
+npm ci
 npm test -- --run # expected to fail: TodoRepo methods are still stubs
 ```
 
@@ -41,6 +41,13 @@ You'll see a few skeleton files in `src/` and a couple of failing tests in
 `tests/`. Copilot is going to fill in the rest.
 `npm run dev` uses **tsx watch**, not nodemon; start it after implementing
 `src/server.ts`. Use `npm test` only when you intentionally want watch mode.
+
+CI uses the committed lockfile and `npm run check`, a source-only, no-emit
+TypeScript check. It does not claim that the unfinished API tests or the
+production-build exercise pass. `tsconfig.ci.json` leaves the workshop's
+`tsconfig.json` output-layout issue intact. Vitest is on the patched 3.2.7 line;
+the four ordinary repository tests still expose the documented missing methods.
+When completing the API, add its real test and build commands to the CI gate.
 
 ---
 
