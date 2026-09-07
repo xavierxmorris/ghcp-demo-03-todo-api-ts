@@ -10,6 +10,10 @@ You'll go from an empty `src/` to a working REST API by **driving Copilot Chat
 with progressively richer prompts**. The goal is to learn the *prompting
 workflow*, not Express.
 
+**Go deeper:** [WORKSHOP.md](WORKSHOP.md) adds a staged API contract,
+validation boundaries, negative cases, build diagnostics, and evidence for
+each prompt. This is a starter lab, not a finished API.
+
 ---
 
 ## What you'll learn
@@ -30,12 +34,13 @@ workflow*, not Express.
 git clone https://github.com/xavierxmorris/ghcp-demo-03-todo-api-ts.git
 cd ghcp-demo-03-todo-api-ts
 npm install
-npm run dev      # nodemon — won't do much yet, src/ is mostly empty stubs
-npm test         # vitest watch
+npm test -- --run # expected to fail: TodoRepo methods are still stubs
 ```
 
 You'll see a few skeleton files in `src/` and a couple of failing tests in
 `tests/`. Copilot is going to fill in the rest.
+`npm run dev` uses **tsx watch**, not nodemon; start it after implementing
+`src/server.ts`. Use `npm test` only when you intentionally want watch mode.
 
 ---
 
@@ -61,7 +66,7 @@ keeps Copilot inside your codebase's conventions instead of inventing its own.
 
 In Chat:
 
-> *"Create `src/routes.ts` exporting an Express `Router` that exposes:
+> *"Complete `src/routes.ts`, default-exporting an Express `Router` that exposes:
 > `GET /todos`, `GET /todos/:id`, `POST /todos`, `PATCH /todos/:id`, `DELETE
 > /todos/:id`. Use the `TodoRepo` from `src/repo.ts`. Return 404 for
 > NotFoundError, 400 for `ZodError`, 500 otherwise. Use the `validate` helper
@@ -112,7 +117,8 @@ yourself.
 
 ### Phase E — Switch back to completions for the polish
 
-Open `src/middleware/logger.ts` (which Chat created in Phase B). Add a comment
+If Phase B created `src/middleware/logger.ts`, open it; otherwise first ask
+Chat to extract the logger there while preserving behavior. Add a comment
 at the bottom:
 
 ```ts
@@ -146,6 +152,15 @@ Chat would have been overkill.
   conversation history is part of the context window.
 - Treat generated tests with the same skepticism as generated production code.
 
+## Starter build caveat
+
+`tsconfig.json` includes `tests/**/*` while setting `rootDir` to `src`.
+That creates a separate TypeScript build error even after the repository
+methods are implemented. Treat it as a build-configuration exercise: keep
+application output compatible with `npm start` (`dist/server.js`), while
+keeping tests runnable and type-checked. Do not widen `rootDir` without
+checking the emitted entry-point path. See the workshop's build checkpoint.
+
 ## Next demo →
-[Demo 04 — Copilot CLI Toolkit](../ghcp-demo-04-copilot-cli-toolkit) — leave
+[Demo 04 — Copilot CLI Toolkit](https://github.com/xavierxmorris/ghcp-demo-04-copilot-cli-toolkit) — leave
 the IDE and drive Copilot from your terminal.
